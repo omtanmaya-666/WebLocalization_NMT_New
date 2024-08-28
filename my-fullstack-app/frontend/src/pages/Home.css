@@ -8,24 +8,30 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-  }
-  
-  .Home-header {
+    background-color: #f4f4f4; /* Light background color for contrast */
+}
+
+.Home-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     background-color: #282c34;
     padding: 20px;
     color: white;
     width: 100%;
-  }
-  
-  .form-container {
-    margin-top: 20px;
+    z-index: 1000;
+}
+
+.form-container {
+    margin-top: 80px; /* Adjust margin to account for fixed header */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
-  
-  .input-field {
+}
+
+.input-field {
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
@@ -34,9 +40,9 @@
     width: 100%;
     max-width: 300px;
     box-sizing: border-box;
-  }
-  
-  .search-button {
+}
+
+.search-button {
     padding: 10px 20px;
     margin: 10px;
     border-radius: 5px;
@@ -48,45 +54,107 @@
     width: 100%;
     max-width: 150px;
     box-sizing: border-box;
-  }
-  
-  .search-button:hover {
+}
+
+.search-button:hover {
     background-color: #21a1f1;
+}
+
+.search-button:disabled {
+    cursor: not-allowed;
+    background-color: #ccc;
+}
+
+.error-message {
+    margin-top: 20px;
+    color: red;
+    font-weight: bold;
+}
+
+/* Editable Text Styles */
+.editable-text {
+    cursor: pointer;
+    border-bottom: 1px dashed #121010;
+    display: inline-block;
+    color: #333; /* Dark text color for readability */
+}
+
+/* Editable Page Content Styles */
+.editable-page-content {
+    border: 1px dashed #0a0a0a;
+    padding: 10px;
+    margin-top: 20px;
+    min-height: 300px;
+    cursor: text;
+    overflow: auto;
+    background-color: #fff; /* White background for editable content */
+    color: #000; /* Ensure text is black for contrast */
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+.edit-button {
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffa500; /* Orange background for the edit button */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 150px;
+    box-sizing: border-box;
   }
   
-  .search-button:disabled {
+  .edit-button:hover {
+    background-color: #ff8c00; /* Darker orange on hover */
+  }
+  
+  .edit-button:disabled {
     cursor: not-allowed;
     background-color: #ccc;
   }
   
-  .error-message {
-    margin-top: 20px;
+.editable-input {
+    font-size: 1em;
+    padding: 4px;
+    width: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Error Message Styles */
+.error-message {
     color: red;
-    font-weight: bold;
-  }
-  
-  /* Responsive Design */
-  @media (min-width: 768px) {
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
     .form-container {
-      flex-direction: row;
+        flex-direction: row;
     }
-  
+
     .input-field, .search-button {
-      margin: 10px;
-      width: auto;
-      flex: 1;
+        margin: 10px;
+        width: auto;
+        flex: 1;
     }
-  }
-  
-  @media (max-width: 480px) {
+}
+
+@media (max-width: 480px) {
     .input-field, .search-button {
-      width: 100%;
-      margin: 5px;
+        width: 100%;
+        margin: 5px;
     }
-  
+
     .Home-header {
-      padding: 15px;
-      font-size: 18px;
+        padding: 15px;
+        font-size: 18px;
     }
-  }
-  
+
+    .editable-page-content {
+        min-height: 200px; /* Adjust height for smaller screens */
+    }
+}
