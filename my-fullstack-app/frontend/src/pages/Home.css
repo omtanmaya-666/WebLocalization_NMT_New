@@ -1,0 +1,92 @@
+/* General Styles */
+.Home {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .Home-header {
+    background-color: #282c34;
+    padding: 20px;
+    color: white;
+    width: 100%;
+  }
+  
+  .form-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .input-field {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #61dafb;
+    color: #282c34;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 150px;
+    box-sizing: border-box;
+  }
+  
+  .search-button:hover {
+    background-color: #21a1f1;
+  }
+  
+  .search-button:disabled {
+    cursor: not-allowed;
+    background-color: #ccc;
+  }
+  
+  .error-message {
+    margin-top: 20px;
+    color: red;
+    font-weight: bold;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .form-container {
+      flex-direction: row;
+    }
+  
+    .input-field, .search-button {
+      margin: 10px;
+      width: auto;
+      flex: 1;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .input-field, .search-button {
+      width: 100%;
+      margin: 5px;
+    }
+  
+    .Home-header {
+      padding: 15px;
+      font-size: 18px;
+    }
+  }
+  
