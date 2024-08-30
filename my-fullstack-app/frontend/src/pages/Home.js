@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css'; // Import the CSS file for styling
 
 function Home() {
@@ -6,10 +6,10 @@ function Home() {
   const [language, setLanguage] = useState('');
   const [loading, setLoading] = useState(false); // State for loading indication
   const [error, setError] = useState(null); // State for error handling
-  const [languages] = useState([
+  const [languages, setLanguages] = useState([
     { code: 'en', name: 'English' },
-    { code: 'es', name: 'Spanish' },
-    { code: 'fr', name: 'French' },
+     
+ 
     { code: 'hi', name: 'Hindi' },
     { code: 'zh', name: 'Chinese' },
     { code: 'as', name: 'Assamese' },
@@ -33,6 +33,7 @@ function Home() {
     { code: 'sa', name: 'Sanskrit' },
     { code: 'sat', name: 'Santhali' },
   ]);
+  
 
   const isValidUrl = (string) => {
     try {
@@ -69,51 +70,6 @@ function Home() {
         document.open();
         document.write(result.content);
         document.close();
-
-        // Inject the script to handle link clicks and navigation using translated content
-        if (!document.getElementById('click-handler-script')) {
-          const script = `
-            // Initialize a counter to track the number of times the script runs
-            let clickHandlerCounter = 0;
-            let scriptHasRun = false; // Flag to ensure script runs only once
-
-            if (!scriptHasRun) { // Check if the script has already been executed
-              scriptHasRun = true; // Set the flag to true to prevent future executions
-
-              document.addEventListener('click', function(event) {
-                const link = event.target.closest('a');
-                if (link) {
-                  event.preventDefault(); // Prevent default navigation
-                  const clickedLink = link.href;
-                  console.log('Last clicked link:', clickedLink);
-                  
-                  // Increment the counter and log it
-                  clickHandlerCounter++;
-                  console.log('Click handler triggered:', clickHandlerCounter, 'times');
-
-                  // Send the clicked link back to the server
-                  fetch('http://localhost:5000/api/localize', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ url: clickedLink, language: '${language}' }), // Send the language along with the clicked link
-                  }).then(response => response.json()).then(data => {
-                    const newDoc = document.open();
-                    newDoc.write(data.content);
-                    newDoc.close();
-                  });
-                }
-              });
-            }
-          `;
-
-          const scriptElement = document.createElement('script');
-          scriptElement.id = 'click-handler-script'; // Add an ID to the script element
-          scriptElement.textContent = script;
-          document.body.appendChild(scriptElement);
-        }
-
       } else {
         setError(result.message);
       }
