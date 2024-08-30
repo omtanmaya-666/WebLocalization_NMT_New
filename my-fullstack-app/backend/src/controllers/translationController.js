@@ -6,15 +6,15 @@ const { translateText } = require('../services/translationService');  // Import 
 const PORT = 5000;  // Define the PORT variable
 
 const extractText_and_Translate = async (url, language, res) => {
-  _language = language;
-
   if (!url || !language) {
     return res.status(400).json({ success: false, message: 'Invalid URL or language' });
   }
 
   let browser;
+  let dbClient;  // To store the MongoDB client reference
   try {
     const collection = await connectToMongoDB();
+    dbClient = collection.s.db.s.client; // Access the MongoDB client reference directly
 
     // Check if the translated HTML for this URL is already in the database
     const existingEntry = await collection.findOne({ url: url, language: language });
@@ -98,12 +98,18 @@ const extractText_and_Translate = async (url, language, res) => {
 
       // Re-inject the script to handle link clicks and navigate using translated content
       const script = `
+        // Initialize a counter to track the number of times the script runs
+        let clickHandlerCounter = 0;
+
         document.addEventListener('click', function(event) {
           const link = event.target.closest('a');
           if (link) {
             event.preventDefault(); // Prevent default navigation
             const clickedLink = link.href;
             console.log('Last clicked link:', clickedLink);
+            // Increment the counter and log it
+            clickHandlerCounter++;
+            console.log('Click handler triggered:', clickHandlerCounter, 'times');
 
             // Send the clicked link back to the server
             fetch('http://localhost:${serverPort}/api/localize', {
@@ -122,6 +128,7 @@ const extractText_and_Translate = async (url, language, res) => {
       `;
 
       const scriptElement = document.createElement('script');
+      scriptElement.id = 'click-handler-script';  // Ensure the script runs only once
       scriptElement.textContent = script;
       document.body.appendChild(scriptElement);
 
@@ -149,7 +156,12 @@ const extractText_and_Translate = async (url, language, res) => {
     if (browser) {
       await browser.close(); // Ensure the browser is closed even if an error occurs
     }
+    if (dbClient) {
+      await dbClient.close(); // Ensure the MongoDB client is closed
+    }
   }
 };
 
 module.exports = { extractText_and_Translate };
+
+
