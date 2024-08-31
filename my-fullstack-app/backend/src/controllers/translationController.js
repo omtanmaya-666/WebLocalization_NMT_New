@@ -44,7 +44,7 @@ const extractText_and_Translate = async (url, language, res) => {
       const links = document.querySelectorAll('a[href]');
       links.forEach((link) => {
         const resolvedHref = new URL(link.getAttribute('href'), baseUrl).href;
-
+    
         // Use regex to filter out unwanted links
         const unwantedLinkPattern = /(google\.[a-z.]+|facebook\.com|twitter\.com|linkedin\.com|instagram\.com|goo\.gl)/i;
         if (!unwantedLinkPattern.test(new URL(resolvedHref).hostname)) {
@@ -53,11 +53,34 @@ const extractText_and_Translate = async (url, language, res) => {
           hrefLinks.push(resolvedHref);
         }
       });
+    
       // Update stylesheet links
-      const stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
-      stylesheets.forEach((link) => {
-        const resolvedHref = new URL(link.getAttribute('href'), baseUrl).href;
-        link.href = resolvedHref; // Set the absolute URL to the stylesheet link
+      const allLinks = document.querySelectorAll('link[href]');
+      allLinks.forEach((link) => {
+        link.href = new URL(link.href, baseUrl).href; // Update href directly to its absolute URL
+      });
+    
+      // Update image sources
+      const images = document.querySelectorAll('img[src]');
+      images.forEach((img) => {
+        img.src = new URL(img.src, baseUrl).href; // Update src directly to its absolute URL
+      });
+
+    // Update image sources with 'data-src' attribute (commonly used for lazy loading)
+        const lazyLoadImages = document.querySelectorAll('img[data-src]');
+      lazyLoadImages.forEach((img) => {
+        img.setAttribute('data-src', new URL(img.getAttribute('data-src'), baseUrl).href); // Update data-src to its absolute URL
+      });
+
+       // Update image sources with 'data-active-img' attribute
+      const activeImgElements = document.querySelectorAll('img[data-active-img]');
+      activeImgElements.forEach((img) => {
+        img.setAttribute('data-active-img', new URL(img.getAttribute('data-active-img'), baseUrl).href); // Update data-active-img to its absolute URL
+      });
+      // Update script sources
+      const scripts = document.querySelectorAll('script[src]');
+      scripts.forEach((script) => {
+        script.src = new URL(script.src, baseUrl).href; // Update src directly to its absolute URL
       });
 
       return {
