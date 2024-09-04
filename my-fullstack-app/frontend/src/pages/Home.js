@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import './Home.css'; // Import the CSS file for styling
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import './Home.css'; // Import the CSS file for additional styling
 
 function Home() {
   const [url, setUrl] = useState('');
   const [language, setLanguage] = useState('');
-  const [loading, setLoading] = useState(false); // State for loading indication
-  const [error, setError] = useState(null); // State for error handling
-  const [languages, setLanguages] = useState([
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const languages = [
     { code: 'en', name: 'English' },
-     
- 
     { code: 'hi', name: 'Hindi' },
     { code: 'zh', name: 'Chinese' },
     { code: 'as', name: 'Assamese' },
@@ -32,8 +32,7 @@ function Home() {
     { code: 'mni', name: 'Manipuri' },
     { code: 'sa', name: 'Sanskrit' },
     { code: 'sat', name: 'Santhali' },
-  ]);
-  
+  ];
 
   const isValidUrl = (string) => {
     try {
@@ -66,7 +65,6 @@ function Home() {
       const result = await response.json();
 
       if (result.success) {
-        // Open the translated content in the same tab to ensure script functionality
         document.open();
         document.write(result.content);
         document.close();
@@ -82,23 +80,35 @@ function Home() {
   };
 
   return (
-    <div className="Home">
-      <header className="Home-header">
-        <h1>Web Localization Project</h1>
-        <div className="form-container">
+    <div className="Home flex flex-col items-center justify-center min-h-screen bg-gray-50">
+      <motion.header
+        className="Home-header text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5 }}
+      >
+        <h1 className="text-4xl font-bold text-purple-600 mb-8">
+          Web Localization Project
+        </h1>
+        <motion.div
+          className="form-container space-y-4"
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
           <input
             type="text"
             placeholder="Enter your URL"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="input-field"
+            className="input-field w-full px-4 py-2 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-transform transform hover:scale-105"
             disabled={loading}
             aria-label="URL input"
           />
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="input-field"
+            className="input-field w-full px-4 py-2 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-transform transform hover:scale-105"
             disabled={loading}
             aria-label="Language selection"
           >
@@ -111,17 +121,36 @@ function Home() {
               </option>
             ))}
           </select>
-          <button onClick={handleSearch} className="search-button" disabled={loading}>
+          <motion.button
+            onClick={handleSearch}
+            className="search-button w-full px-4 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+          >
             {loading ? 'Processing...' : 'Search'}
-          </button>
-        </div>
-        {error && <div className="error-message" aria-live="assertive">{error}</div>}
-      </header>
+          </motion.button>
+        </motion.div>
+        {error && (
+          <motion.div
+            className="error-message text-red-500 mt-4"
+            initial={{ x: -10, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 50 }}
+            aria-live="assertive"
+          >
+            {error}
+          </motion.div>
+        )}
+      </motion.header>
     </div>
   );
 }
 
 export default Home;
+
+
 
 
 // // Live Edit Feature 
