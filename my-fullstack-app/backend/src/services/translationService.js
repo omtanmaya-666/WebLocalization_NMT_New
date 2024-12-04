@@ -13,8 +13,8 @@ const translateText = async (texts, targetLanguage) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'REV-API-KEY': '99425a49d90bbc4829af2934e823ce27b5b46a55',
-          'REV-APP-ID': 'rev.interntesting',
+          'REV-API-KEY': '1258f926a0d08c551fb33157e3af7fffbb7b9526',
+          'REV-APP-ID': 'com.captainamerica',
           'src_lang': 'en',
           'tgt_lang': targetLanguage,
           'domain': '1',
